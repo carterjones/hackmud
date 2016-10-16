@@ -7,7 +7,9 @@ function (c, a) // t:#s.username.target
 
         // Get the publics and entries.
         var l = f.filter(function(v){
-            return v.includes(".pub") || v.includes(".entry")
+            return (v.includes(".pub") || v.includes(".entry")) &&
+                   // Filter out known malicious entries.
+                   (!v.includes("accenture"))
         })
 
         return {
