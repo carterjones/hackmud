@@ -60,9 +60,12 @@ function (c, a) // s:#s.username.target_script
         })
 
         // Parse each entry and filter out none, empty, nil, error, etc.
-        out.split("\n").forEach(function(e){
+        if (typeof(out) == "string") {
+            out = out.split("\n")
+        }
+        out.forEach(function(e){
             // Make sure it is a valid entry.
-            if (e && e.includes(".")) {
+            if (e && e.includes(".") && e.includes("_")) {
                 ts.push(e)
             }
         })
