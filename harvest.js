@@ -20,6 +20,7 @@ function (c, a) // s:#s.username.target_script
         rePr = /(date for|continues on|of the|developments on) ([a-z0-9_]+(.sh|.exe)?)/ig, // regex for projects
         rePa = /(strategy )([a-z0-9_]+)/ig,                                                // regex for password(s)
         m,
+        es = [],  // entries
         prs = [], // projects
         pas = [], // passwords
         ts = []   // targets
@@ -47,7 +48,19 @@ function (c, a) // s:#s.username.target_script
 
     // Gather the results from each of the projects (and assume only one password was found).
     prs.forEach(function(p) {
-        ts.push(#s.nuutec.entry({see:"employees", p:pas[0], project:p}))
+        es = #s.nuutec.entry({see:"employees", p:pas[0], project:p})
+        es.forEach(function(e){
+            // Make sure it is a valid entry.
+            if (e && e.includes(".")) {
+                ts.push(e)
+            }
+        })
+    })
+
+    // TODO: find out why this isn't getting called.
+    // Run the cracker on the valid targets.
+    ts.forEach(function(t) {
+        #s.coeus.t1_cracker({t:"#s." + t})
     })
 
     return ts
