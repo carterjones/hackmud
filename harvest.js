@@ -2,7 +2,18 @@ function (c, a) // s:#s.username.target_script
 {
     // Handle the case with no arguments passed.
     if (a == null) {
-        return "usage: harvest{s:#s.username.target_script}"
+        // Get all FULLSEC targets.
+        var f = #s.scripts.fullsec();
+
+        // Get the publics and entries.
+        var l = f.filter(function(v){
+            return v.includes("pub") || v.includes("entry")
+        })
+
+        return {
+            usage: "harvest{s:#s.username.target_script}",
+            fullsec_targets: l
+        }
     }
 
     var pages = a.s.call().split("\n").filter(function(v) {
