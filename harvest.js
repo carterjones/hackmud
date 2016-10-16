@@ -71,11 +71,7 @@ function (c, a) // s:#s.username.target_script
         })
     })
 
-    // TODO: find out why this isn't getting called.
-    // Run the cracker on the valid targets.
-    ts.forEach(function(t) {
-        #s.coeus.t1_cracker({t:"#s." + t})
-    })
+    // TODO: save the results to the database for further processing.
 
     return ts
 }
