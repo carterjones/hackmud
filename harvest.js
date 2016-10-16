@@ -1,4 +1,4 @@
-function (c, a) // s:#s.username.target_script
+function (c, a) // t:#s.username.target
 {
     // Handle the case with no arguments passed.
     if (a == null) {
@@ -7,16 +7,16 @@ function (c, a) // s:#s.username.target_script
 
         // Get the publics and entries.
         var l = f.filter(function(v){
-            return v.includes("pub") || v.includes("entry")
+            return v.includes(".pub") || v.includes(".entry")
         })
 
         return {
-            usage: "harvest{s:#s.username.target_script}",
+            usage: "harvest{s:#s.user.target}",
             fullsec_targets: l
         }
     }
 
-    var pages = a.s.call().split("\n").filter(function(v) {
+    var pages = a.t.call().split("\n").filter(function(v) {
             return v.includes("|")                     // look for the line with pages listed
         }).join("").split("|").map(function(v) {       // split the pages up
             return v.trim()                            // trim whitespace
@@ -24,7 +24,7 @@ function (c, a) // s:#s.username.target_script
             return v.length > 0                        // filter out empty results from this list
         }),
         args = {},                                     // arguments passed to the function passed in to this script
-        out = a.s.call({}),                            // generic output variable
+        out = a.t.call({}),                            // generic output variable
         none = out.match(/with ([a-z]+):"([a-z]+)"/i), // parse the output of the function with no parameters passed in
         cmd = none[1],                                 // the command used to view pages
         cw = none[2],                                  // the codeword needed to access the projects
@@ -44,7 +44,7 @@ function (c, a) // s:#s.username.target_script
         args[cmd] = v
 
         // Call the function with the custom arguments.
-        out = a.s.call(args)
+        out = a.t.call(args)
 
         // Search for projects.
         while (m = rePr.exec(out)) {
@@ -62,7 +62,7 @@ function (c, a) // s:#s.username.target_script
         // Call the function with the custom arguments.
         // Note: The password parameter can either be p, pass, or password.
         //       Therefore, we pass in all three, since it ignores unneeded parameters.
-        out = a.s.call({
+        out = a.t.call({
             p:pas[0],        // password
             pass:pas[0],     // password
             password:pas[0], // password
