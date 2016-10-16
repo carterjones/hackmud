@@ -16,6 +16,7 @@ function (c, a) // t:#s.username.target
         }
     }
 
+    // Define some variables.
     var pages = a.t.call().split("\n").filter(function(v) {
             return v.includes("|")                     // look for the line with pages listed
         }).join("").split("|").map(function(v) {       // split the pages up
@@ -24,9 +25,21 @@ function (c, a) // t:#s.username.target
             return v.length > 0                        // filter out empty results from this list
         }),
         args = {},                                     // arguments passed to the function passed in to this script
-        out = a.t.call({}),                            // generic output variable
-        none = out.match(/with ([a-z]+):"([a-z]+)"/i), // parse the output of the function with no parameters passed in
-        cmd = none[1],                                 // the command used to view pages
+        out = a.t.call({}), out2,                      // generic output variable
+        none = out.match(/with ([a-z]+):"([a-z]+)"/i)  // parse the output of the function with no parameters passed in
+
+    // Add a check based on some money theft scripts that all shared parsing errors.
+    if (none == null) {
+        out2 = a.t.call({})
+        return {
+            error: "Parsing failed: this is a potentially malicious server. If the glitches in out1 and out2 look the same, then it is almost certainly malicious.",
+            out1: out,
+            out2: out2
+        }
+    }
+
+    // Continue defining variables.
+    var cmd = none[1],                                 // the command used to view pages
         cw = none[2],                                  // the codeword needed to access the projects
         rePr = /(date for|continues on|of the|developments on) ([a-z0-9_]+(.sh|.exe)?)/ig, // regex for projects
         rePa = /(strategy )([a-z0-9_]+)/ig,                                                // regex for password(s)
