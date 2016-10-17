@@ -9,11 +9,13 @@ function (c, a) // t:#s.username.target
         var l = f.filter(function(v){
             return (v.includes(".pub") || v.includes(".entry")) &&
                    // Filter out known malicious entries.
-                   (!v.includes("accenture"))
+                   !(v.includes("accenture") &&
+                     v.includes("blackcore")
+                    )
         })
 
         return {
-            usage: "harvest{s:#s.user.target}",
+            usage: "harvest{t:#s.user.target}",
             fullsec_targets: l
         }
     }
