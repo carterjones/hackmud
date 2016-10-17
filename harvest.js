@@ -21,11 +21,11 @@ function (c, a) // t:#s.username.target
     }
 
     // Define some variables.
-    var pages = a.t.call().split("\n").filter(function(v) {
-            return v.includes("|")                     // look for the line with pages listed
-        }).join("").split("|").map(function(v) {       // split the pages up
+    var b = a.t.call().split("\n"),                    // banner
+        pages = b[b.length-1]                          // take the last line of the banner
+        .split("|").map(function(v) {                  // split the pages up
             return v.trim()                            // trim whitespace
-        }).filter(function(v){
+        }).filter(function(v) {
             return v.length > 0                        // filter out empty results from this list
         }),
         args = {},                                     // arguments passed to the function passed in to this script
@@ -97,6 +97,12 @@ function (c, a) // t:#s.username.target
                 ts.push(e)
             }
         })
+        if (ts.length > 0) {
+            var safety = #s.scripts.get_level({ name: ts[0] })
+            if (safety != "FULLSEC") {
+                return "STOP. THIS IS MALICOUS."
+            }
+        }
     })
 
     // TODO: save the results to the database for further processing.
