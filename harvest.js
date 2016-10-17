@@ -92,8 +92,8 @@ function (c, a) // t:#s.username.target
             out = out.split("\n")
         }
         out.forEach(function(e){
-            // Make sure it is a valid entry.
-            if (e && e.includes(".") && e.includes("_")) {
+            // Make prefer unidentified entries (they seem to have more success).
+            if (e && e.includes("unidentified")) {
                 ts.push(e)
             }
         })
