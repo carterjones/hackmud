@@ -93,7 +93,7 @@ function (c, a) // t:#s.username.target
         }
         out.forEach(function(e){
             // Make prefer unidentified entries (they seem to have more success).
-            if (e && e.includes("unidentified")) {
+            if (e && e.includes(".") && e.includes("_")) {
                 ts.push(e)
             }
         })
