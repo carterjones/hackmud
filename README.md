@@ -19,6 +19,7 @@
 
 - nuutec
 - suborbital_airlines
+- weyland
 
 # notes
 
@@ -31,6 +32,19 @@ From [here](https://www.hackmud.com/forums/new_players/how_to_script_please_):
 - find: #db.f()
 - findAndModify: #db.m()
 - save: #db.s()
+
+## example db usage
+
+    function(c,a) {
+        // Remove any old test documents.
+        #db.r({ script:"test" })
+        // Insert a new test document.
+        #db.i({ script:"test", value:"myvalue" })
+        // Save an update to the existing test document.
+        #db.s({ script:"test", value:"mynewvalue" })
+        // Return the test document.
+        return #db.f({ script:"test" }).first()
+    }
 
 # items
 
