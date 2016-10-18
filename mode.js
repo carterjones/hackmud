@@ -10,23 +10,24 @@ function (c, a)
     }
 
     function load_locks() {
-        for (i=3; i < 6; i++) {
+        // Load the locks.
+        for (i = 0; i < 6; i++) {
             #s.sys.upgrades({load:i})
         }
     }
 
-    function load_dev_upgrades() {
-        #s.sys.upgrades({load:6})  // script_slot_v1
-        #s.sys.upgrades({load:11}) // char_count_v1
-        #s.sys.upgrades({load:12}) // char_count_v1
+    function load_all() {
+        // Load the first 15 upgrades.
+        for (i = 0; i < 15; i++) {
+            #s.sys.upgrades({load:i})
+        }
     }
 
-    if (a.m == "lock") {
+    if (a == null) {
+        unload()
+        load_all()
+    } else if (a.m == "lock") {
         unload()
         load_locks()
-    } else if (a.m == "dev") {
-        unload()
-        load_locks()
-        load_dev_upgrades()
     }
 }
