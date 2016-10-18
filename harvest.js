@@ -105,7 +105,5 @@ function (c, a) // t:#s.username.target
         }
     })
 
-    // TODO: save the results to the database for further processing.
-
     return ts
 }
