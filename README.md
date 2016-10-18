@@ -1,15 +1,27 @@
+# t1 targets
+
+- accenture
+- amal_robo
+- bluebun
+- halperyon
+- nuutec
+- ros13
+- suborbital_airlines
+
+# t2 targets
+
+- bunnybat_hut
+- suborbital_airlines
+
+# strange targets
+
+- `blackstar` generates scripts that don't exist
+
 # shortcuts
 
     /u = sys.upgrades
     /fs = scripts.fullsec
-    /t1 = harvest{t:#s.ros13.entry}
-    /t2 = harvest{t:#s.ros13.pub}
-    /t3 = harvest{t:#s.ros13.pubinfo}
-    /t4 = harvest{t:#s.suborbital_airlines.pub}
-    /t5 = harvest{t:#s.nuutec.entry}
-    /t6 = harvest{t:#s.halperyon.pubinfo}
-    /t7 = harvest{t:#s.halperyon.pub_info}
-    /kh = kernel.hardline
+    /hl = kernel.hardline
     /dc = kernel.hardline {dc:true}
     /lock = mode{m:"lock"}
     /dev = mode{m:"dev"}
