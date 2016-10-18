@@ -9,8 +9,10 @@ function (c, a) // t:#s.username.target
         var l = f.filter(function(v){
             return (v.includes(".pub") || v.includes(".entry")) &&
                    // Filter out known malicious entries.
-                   !(v.includes("accenture") &&
-                     v.includes("blackcore")
+                   !(v.includes("accenture") ||
+                     v.includes("arino") ||
+                     v.includes("blackcore") ||
+                     v.includes("dynamo_corp")
                     )
         })
 
