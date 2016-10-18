@@ -30,7 +30,8 @@ function (c, a) // t:#s.username.target
         }),
         args = {},                                     // arguments passed to the function passed in to this script
         out = a.t.call({}), out2,                      // generic output variable
-        none = out.match(/with ([a-z]+):"([a-z]+)"/i)  // parse the output of the function with no parameters passed in
+        none = out.match(/with ([a-z]+):"([a-z]+)"/i), // parse the output of the function with no parameters passed in
+        stop = null                                    // flag that can be set to a string to indicate the script should stop
 
     // Add a check based on some money theft scripts that all shared parsing errors.
     if (none == null) {
@@ -106,11 +107,15 @@ function (c, a) // t:#s.username.target
         })
         if (ts.length > 0) {
             var safety = #s.scripts.get_level({ name: ts[0] })
-            if (safety != "FULLSEC") {
-                return "STOP. THIS IS MALICOUS."
+            if (safety != 4) { // 4 = FULLSEC
+                stop = "STOP. THIS IS MALICOUS."
+                return
             }
         }
     })
+    if (stop != null) {
+        return stop
+    }
 
     // Gather matching HIGHSEC and MIDSEC targets.
     var hms = #s.scripts.highsec().concat(#s.scripts.midsec()),
