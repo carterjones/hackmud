@@ -21,7 +21,7 @@
 - suborbital_airlines
 - weyland
 
-# notes
+# db notes
 
 From [here](https://www.hackmud.com/forums/new_players/how_to_script_please_):
 
@@ -61,3 +61,15 @@ From [here](https://www.hackmud.com/forums/new_players/how_to_script_please_):
     tier_1 script_space script_slot_v1
     tier_1 script_space char_count_v1
     tier_1 script_space public_script_v1
+
+# various commands
+
+    sys.migrate      // bypass the tutorial
+    sys.status       // get system status
+    accts.xfer_gc_to // transfer money to another account
+
+# useful links
+
+- [How to find t2 NPCs](http://steamcommunity.com/sharedfiles/filedetails/?id=771040875)
+- [Decoding small QR codes by hand](http://blog.qartis.com/decoding-small-qr-codes-by-hand/)
+- [How to Read QR Symbols Without Your Mobile Telephone](http://www.ams.org/samplings/feature-column/fc-2013-02)
