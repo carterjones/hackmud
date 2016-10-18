@@ -47,10 +47,12 @@ function (c, a) // t:#s.username.target
         cw = none[2],                                  // the codeword needed to access the projects
         rePr = /(date for|continues on|of the|developments on) ([a-z0-9_]+(.sh|.exe)?)/ig, // regex for projects
         rePa = /(strategy )([a-z0-9_]+)/ig,                                                // regex for password(s)
-        m,
+        reUs = /([a-z0-9_]+) (of project|when being)/ig,                                      // regex for users
+        m, i,     // iteration variables that are used later
         es = [],  // entries
         prs = [], // projects
         pas = [], // passwords
+        us = [],  // users
         ts = []   // targets
 
     // Look for projects and passwords in each of the pages.
@@ -71,6 +73,11 @@ function (c, a) // t:#s.username.target
         // Search for passwords.
         while (m = rePa.exec(out)) {
             pas.push(m[2])
+        }
+
+        // Search for users.
+        while (m = reUs.exec(out)) {
+            us.push(m[1])
         }
     })
 
@@ -105,5 +112,20 @@ function (c, a) // t:#s.username.target
         }
     })
 
-    return ts
+    // Gather matching HIGHSEC and MIDSEC targets.
+    var hms = #s.scripts.highsec().concat(#s.scripts.midsec()),
+        t2_ts = [],
+        user = a.t.name.split(".")[0]
+
+    for (i = 0; i < hms.length; i++) {
+        if (hms[i].includes(user)) {
+            t2_ts.push(hms[i])
+        }
+    }
+
+    return {
+        t1_ts:ts,
+        users:us,
+        t2_ts:t2_ts
+    }
 }
