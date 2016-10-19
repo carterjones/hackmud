@@ -80,6 +80,13 @@ From [here](https://www.hackmud.com/forums/new_players/how_to_script_please_):
     sys.status       // get system status
     accts.xfer_gc_to // transfer money to another account
 
+# how to t2
+
+1. Find a FULLSEC entry, look at the pages, get usernames.
+1. Find a HIGHSEC/MIDSEC entry for the same user.
+1. Execute the following command and find a username where this works: `user.script {username:"theuser", action:"order_qrs"}`
+1. Parse the QR codes and find the ID.
+
 # useful links
 
 - [How to find t2 NPCs](http://steamcommunity.com/sharedfiles/filedetails/?id=771040875)
