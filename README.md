@@ -5,12 +5,14 @@
 - bluebun
 - halperyon
 - nuutec
+- protein_prevention
 - ros13
 - suborbital_airlines
 
 # t2 targets
 
 - bunnybat_hut
+- setec_gas
 - suborbital_airlines
 
 # strange targets
