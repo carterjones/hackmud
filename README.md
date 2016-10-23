@@ -14,6 +14,7 @@
 - bunnybat_hut
 - setec_gas
 - suborbital_airlines
+- weyland
 
 # strange targets
 
