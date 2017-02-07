@@ -1,17 +1,6 @@
 function(context,a) {
     var ls,
-        
-        //out = #s.bunnybat_hut.memberlogin({username:"scook", navigation:"order_qrs"}),
-        //out = #s.bunnybat_hut.members_only({username:"m_c_fly", get:"order_qrs"}),
-        //out = #s.bunnybat_hut.members({username:"sammy_l_jack", cmd:"order_qrs"}),
-        //out = #s.setec_gas.members_only({username:"lion_eyes", process:"order_qrs"}),
-        //out = #s.setec_gas.member_access({username:"scook", get:"order_qrs"}),
-        //out = #s.setec_gas.memberlogin({username:"oz", get:"order_qrs"}),
         out = #s.setec_gas.memberlogin({username:"cheechfiend91", get:"order_qrs"}),
-        //out = #s.soylentbean.member_access({username:"mjay_m_walker", action:"order_qrs"}),
-        //out = #s.suborbital_airlines.members({username:"bobranator", get:"order_qrs"}),
-        //out = #s.suborbital_airlines.members_only({username:"rocky_b", command:"order_qrs"}),
-        //out = #s.weyland.members_only({username:"m_clarke_dunk", see:"order_qrs"}),
         cs = out.filter(function(l) {
             // Exclude non-QR code entries.
             return !l.includes("missing")
@@ -22,9 +11,7 @@ function(context,a) {
             return ls
         }),
         ret = "",
-        //ret = out + "\n",
         c = cs[0]
-    //cs = [cs[3]]
 
     cs.forEach(function(c) {
         var width = c[0].length,
@@ -275,7 +262,6 @@ function(context,a) {
                         // Save the byte.
                         bytes.push(byte)
                         numId = (numId+1) % 10
-                        //result += String.fromCharCode(byte)
 
                         // Reset variables.
                         numBits = 0
@@ -353,7 +339,6 @@ function(context,a) {
             results.push(result)
         }
 
-        //ret += qrToString() + "\n"
         if (enc != 4) {
             ret += "Not byte encoded.\n"
         }
@@ -381,7 +366,7 @@ function(context,a) {
         return ret
     })
 
-    return ret // + cs.length + "\n"
+    return ret
 
     // Useful links:
     // - http://www.thonky.com/qr-code-tutorial/format-version-information
