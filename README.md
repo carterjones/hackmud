@@ -2,6 +2,7 @@
 
 - accenture
 - amal_robo
+- atbrady
 - bluebun
 - halperyon
 - nuutec
@@ -13,6 +14,7 @@
 
 - bunnybat_hut
 - setec_gas
+- soylentbean
 - suborbital_airlines
 - weyland
 

@@ -12,12 +12,14 @@ function (c, a) // t:#s.username.target
                    !(v.includes("accenture") ||
                      v.includes("arino") ||
                      v.includes("blackcore") ||
+                     v.includes("blackstar") ||
                      v.includes("dynamo_corp") ||
                      v.includes("jinteki_corp") ||
                      v.includes("l4sh") ||
                      v.includes("lunar_systems") ||
                      v.includes("n_inc") ||
                      v.includes("onion") ||
+                     v.includes("perimeter_systems") ||
                      v.includes("ploogle") ||
                      v.includes("pwnhub") ||
                      v.includes("reinit") ||
