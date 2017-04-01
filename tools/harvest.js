@@ -1,12 +1,11 @@
-function(context, a) // t:#s.username.target
-{
+function(context, a) { // t: #s.username.target
     // Handle the case with no arguments passed.
     if (a === null) {
         // Get all FULLSEC targets.
-        var f = #s.scripts.fullsec();
+        var fullsec_targets = #s.scripts.fullsec();
 
         // Get the publics and entries.
-        var l = f.filter(function(v) {
+        var publics_and_entries = fullsec_targets.filter(function(v) {
             return (v.includes(".pub") || v.includes(".entry")) &&
                 // Filter out known malicious entries.
                 !(v.includes("accenture") ||
@@ -29,23 +28,30 @@ function(context, a) // t:#s.username.target
 
         return {
             usage: "harvest{t:#s.user.target}",
-            fullsec_targets: l
+            fullsec_targets: publics_and_entries
         };
     }
 
-    // Define some variables.
-    var b = a.t.call().split("\n"), // banner
-        pages = b[b.length - 1] // take the last line of the banner
-        .split("|").map(function(v) { // split the pages up
-            return v.trim(); // trim whitespace
+    // Extract the banner of the script.
+    var banner = a.t.call().split("\n");
+
+    // Extract the pages from the banner using the following process:
+    // - take the last line of the banner, which is where the list of pages is
+    // - split the pages up using the '|' character
+    // - trim off whitespace from each page name
+    // - remove any empty entries from the resulting list
+    var pages = banner[banner.length - 1]
+        .split("|").map(function(v) {
+            return v.trim();
         }).filter(function(v) {
-            return v.length > 0; // filter out empty results from this list
-        }),
-        args = {}, // arguments passed to the function passed in to this script
-        out = a.t.call({}),
-        out2, // generic output variable
-        none = out.match(/with ([a-z]+):"([a-z]+)"/i), // parse the output of the function with no parameters passed in
-        stop = null; // flag that can be set to a string to indicate the script should stop
+            return v.length > 0;
+        });
+
+    var args = {}; // arguments passed to the function passed in to this script
+    var out = a.t.call({});
+    var out2; // generic output variable
+    var none = out.match(/with ([a-z]+):"([a-z]+)"/i); // parse the output of the function with no parameters passed in
+    var stop = null; // flag that can be set to a string to indicate the script should stop
 
     // Add a check based on some money theft scripts that all shared parsing errors.
     if (none === null) {
