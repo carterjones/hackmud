@@ -88,7 +88,7 @@ function(context, args) { // t: #s.username.target
     var projects = [];
     var passwords = [];
     var users = [];
-    var targets = [];
+    var t1_targets = [];
 
     // Look for projects and passwords in each of the pages.
     pages.forEach(function(v) {
@@ -120,17 +120,20 @@ function(context, args) { // t: #s.username.target
     });
 
     // Gather the results from each of the projects (and assume only one password was found).
-    projects.forEach(function(p) {
+    projects.forEach(function(project) {
         // Call the function with the custom arguments.
-        // Note: The password parameter can either be p, pass, or password.
+        // Note: The password parameter can be any ofe the following:
+        //         - p
+        //         - pass
+        //         - password
         //       Therefore, we pass in all three, since it ignores unneeded parameters.
         cw_key = [view_command];
         output_generic = args.t.call({
-            p: passwords[0], // password
-            pass: passwords[0], // password
-            password: passwords[0], // password
-            project: p, // project
-            cw_key: codeword, // codeword
+            p: passwords[0],
+            pass: passwords[0],
+            password: passwords[0],
+            project: project,
+            cw_key: codeword,
         });
 
         // Parse each entry and filter out none, empty, nil, error, etc.
@@ -138,14 +141,16 @@ function(context, args) { // t: #s.username.target
             output_generic = output_generic.split("\n");
         }
 
-        output_generic.forEach(function(e) {
+        output_generic.forEach(function(entry) {
             // Make prefer unidentified entries (they seem to have more success).
-            if (e && e.includes(".") && e.includes("_")) {
-                targets.push(e);
+            if (entry && entry.includes(".") && entry.includes("_")) {
+                t1_targets.push(entry);
             }
         });
-        if (targets.length > 0) {
-            var safety = #s.scripts.get_level({ name: targets[0] });
+
+        // For the first target, make sure it is a fullsec target before continuing.
+        if (t1_targets.length > 0) {
+            var safety = #s.scripts.get_level({ name: t1_targets[0] });
             if (safety != 4) { // 4 = FULLSEC
                 stop_flag = "STOP. THIS IS MALICOUS.";
                 return;
@@ -158,19 +163,19 @@ function(context, args) { // t: #s.username.target
     }
 
     // Gather matching HIGHSEC and MIDSEC targets.
-    var hms = #s.scripts.highsec().concat(#s.scripts.midsec()),
-        t2_ts = [],
-        user = args.t.name.split(".")[0];
+    var high_and_midsec_scripts = #s.scripts.highsec().concat(#s.scripts.midsec());
+    var t2_targets = [];
+    var user = args.t.name.split(".")[0];
 
-    for (i = 0; i < hms.length; i++) {
-        if (hms[i].includes(user)) {
-            t2_ts.push(hms[i]);
+    for (i = 0; i < high_and_midsec_scripts.length; i++) {
+        if (high_and_midsec_scripts[i].includes(user)) {
+            t2_targets.push(high_and_midsec_scripts[i]);
         }
     }
 
     return {
-        t1_ts: targets,
+        t1_targets: targets,
         users: users,
-        t2_ts: t2_ts
+        t2_targets: t2_targets
     };
 }
