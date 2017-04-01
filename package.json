@@ -1,0 +1,17 @@
+{
+    "name": "hackmud",
+    "license": "GPL-3.0",
+    "private": true,
+    "repository": "NimVek/hackmud",
+    "devDependencies": {
+        "grunt": "latest",
+        "grunt-contrib-clean": "latest",
+        "grunt-contrib-copy": "latest",
+        "grunt-contrib-jshint": "latest",
+        "grunt-contrib-uglify": "latest",
+        "grunt-jsbeautifier": "latest"
+    },
+    "scripts": {
+        "build": "grunt"
+    }
+}
