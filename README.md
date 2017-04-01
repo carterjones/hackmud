@@ -88,6 +88,7 @@ From [here](https://www.hackmud.com/forums/new_players/how_to_script_please_):
 # how to t2
 
 1. Find a FULLSEC entry, look at the pages, get usernames.
+   Note: `dtr.ls` is useful for this.
 1. Find a HIGHSEC/MIDSEC entry for the same user.
 1. Execute the following command and find a username where this works: `user.script {username:"theuser", action:"order_qrs"}`
 1. Parse the QR codes and find the ID.
@@ -97,3 +98,25 @@ From [here](https://www.hackmud.com/forums/new_players/how_to_script_please_):
 - [How to find t2 NPCs](http://steamcommunity.com/sharedfiles/filedetails/?id=771040875)
 - [Decoding small QR codes by hand](http://blog.qartis.com/decoding-small-qr-codes-by-hand/)
 - [How to Read QR Symbols Without Your Mobile Telephone](http://www.ams.org/samplings/feature-column/fc-2013-02)
+
+# useful scripts
+
+- `scripts.get_level {name:"script-id"}`
+- `dtr.man{list:true}`
+
+# investigate these
+
+- https://github.com/NimVek/hackmud/blob/master/tools/qr_decode.js
+
+- `buttslol.str`: Script golfing library to store static strings in the #db
+- `dtr.best_items`: Record and compare best item stats
+- `dtr.lib`: Convenience Library - Feature Requests Welcome!
+- `dtr.ls`: List all callable scripts
+- `dtr.man`: View manual pages for scripts
+- `ez.conspec`: Hack T2 CON_SPEC locks
+- `fezmonkey.trust`: List trust scripts by security level
+- `happybill.npcs`: lists npcs in full/high/midsec
+- `lore.qr`: a qr code decoder
+- `lore.shim`: introspect scraping and cracking scripts
+- `math.scripts`: Get list of npc OR user scripts for a security level.
+- [highsec] `n00bish.t2solver`: Automated T2 npc farmer
