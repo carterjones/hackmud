@@ -1,6 +1,6 @@
-function(context, a) { // t: #s.username.target
+function(context, args) { // t: #s.username.target
     // Handle the case with no arguments passed.
-    if (a === null) {
+    if (args === null) {
         // Get all FULLSEC targets.
         var fullsec_targets = #s.scripts.fullsec();
 
@@ -33,7 +33,7 @@ function(context, a) { // t: #s.username.target
     }
 
     // Extract the banner of the script.
-    var banner = a.t.call().split("\n");
+    var banner = args.t.call().split("\n");
 
     // Extract the pages from the banner using the following process:
     // - take the last line of the banner, which is where the list of pages is
@@ -47,105 +47,120 @@ function(context, a) { // t: #s.username.target
             return v.length > 0;
         });
 
-    var args = {}; // arguments passed to the function passed in to this script
-    var out = a.t.call({});
-    var out2; // generic output variable
-    var none = out.match(/with ([a-z]+):"([a-z]+)"/i); // parse the output of the function with no parameters passed in
-    var stop = null; // flag that can be set to a string to indicate the script should stop
+    if (pages !== null) {
+        return pages;
+    }
+
+    // Prepare a variable to hold arguments that will be passed to the function passed in to this script.
+    var function_args = {};
+
+    // Create a generic output variable.
+    var output_generic = args.t.call({});
+
+    // Parse the output of the function with no parameters passed in.
+    var no_parameters_result = output_generic.match(/with ([a-z]+):"([a-z]+)"/i);
+
+    // This is a flag that can be set to a string to indicate the script should stop.
+    var stop_flag = null;
 
     // Add a check based on some money theft scripts that all shared parsing errors.
-    if (none === null) {
-        out2 = a.t.call({});
+    if (no_parameters_result === null) {
         return {
             error: "Parsing failed: this is a potentially malicious server. If the glitches in out1 and out2 look the same, then it is almost certainly malicious.",
-            out1: out,
-            out2: out2
+            out1: output_generic,
+            out2: args.t.call({})
         };
     }
 
-    // Continue defining variables.
-    var cmd = none[1], // the command used to view pages
-        cw = none[2], // the codeword needed to access the projects
-        rePr = /(date for|continues on|of the|developments on) ([a-z0-9_]+(.sh|.exe)?)/ig, // regex for projects
-        rePa = /(strategy )([a-z0-9_]+)/ig, // regex for password(s)
-        reUs = /([a-z0-9_]+) (of project|when being)/ig, // regex for users
-        m, i, // iteration variables that are used later
-        es = [], // entries
-        prs = [], // projects
-        pas = [], // passwords
-        us = [], // users
-        ts = []; // targets
+    // Extract the command used to view pages.
+    var view_command = no_parameters_result[1];
+
+    // Extract the codeword needed to access the projects.
+    var codeword = no_parameters_result[2];
+
+    // Define a regex for projects, passwords, and users.
+    var regex_projects = /(date for|continues on|of the|developments on) ([a-z0-9_]+(.sh|.exe)?)/ig;
+    var regex_passwords = /(strategy )([a-z0-9_]+)/ig;
+    var regex_users = /([a-z0-9_]+) (of project|when being)/ig;
+
+    // Declare iteration variables and arrays that are used later.
+    var m, i;
+    var projects = [];
+    var passwords = [];
+    var users = [];
+    var targets = [];
 
     // Look for projects and passwords in each of the pages.
     pages.forEach(function(v) {
-        args = {};
+        function_args = {};
         // Craft the arguments that will be called.
         // e.g.: {"see":"about_us"}
-        args[cmd] = v;
+        function_args[view_command] = v;
 
         // Call the function with the custom arguments.
-        out = a.t.call(args);
+        output_generic = args.t.call(function_args);
 
         // Search for projects.
         do {
-            m = rePr.exec(out);
-            prs.push(m[2]);
+            m = regex_projects.exec(output_generic);
+            projects.push(m[2]);
         } while (m !== null);
 
         // Search for passwords.
         do {
-            m = rePa.exec(out);
-            pas.push(m[2]);
+            m = regex_passwords.exec(output_generic);
+            passwords.push(m[2]);
         } while (m !== null);
 
         // Search for users.
         do {
-            m = reUs.exec(out);
-            us.push(m[1]);
+            m = regex_users.exec(output_generic);
+            users.push(m[1]);
         } while (m !== null);
     });
 
     // Gather the results from each of the projects (and assume only one password was found).
-    prs.forEach(function(p) {
+    projects.forEach(function(p) {
         // Call the function with the custom arguments.
         // Note: The password parameter can either be p, pass, or password.
         //       Therefore, we pass in all three, since it ignores unneeded parameters.
-        cw_key = [cmd];
-        out = a.t.call({
-            p: pas[0], // password
-            pass: pas[0], // password
-            password: pas[0], // password
+        cw_key = [view_command];
+        output_generic = args.t.call({
+            p: passwords[0], // password
+            pass: passwords[0], // password
+            password: passwords[0], // password
             project: p, // project
-            cw_key: cw, // codeword
+            cw_key: codeword, // codeword
         });
 
         // Parse each entry and filter out none, empty, nil, error, etc.
-        if (typeof(out) == "string") {
-            out = out.split("\n");
+        if (typeof(output_generic) == "string") {
+            output_generic = output_generic.split("\n");
         }
-        out.forEach(function(e) {
+
+        output_generic.forEach(function(e) {
             // Make prefer unidentified entries (they seem to have more success).
             if (e && e.includes(".") && e.includes("_")) {
-                ts.push(e);
+                targets.push(e);
             }
         });
-        if (ts.length > 0) {
-            var safety = #s.scripts.get_level({ name: ts[0] });
+        if (targets.length > 0) {
+            var safety = #s.scripts.get_level({ name: targets[0] });
             if (safety != 4) { // 4 = FULLSEC
-                stop = "STOP. THIS IS MALICOUS.";
+                stop_flag = "STOP. THIS IS MALICOUS.";
                 return;
             }
         }
     });
 
-    if (stop !== null) {
-        return stop;
+    if (stop_flag !== null) {
+        return stop_flag;
     }
 
     // Gather matching HIGHSEC and MIDSEC targets.
     var hms = #s.scripts.highsec().concat(#s.scripts.midsec()),
         t2_ts = [],
-        user = a.t.name.split(".")[0];
+        user = args.t.name.split(".")[0];
 
     for (i = 0; i < hms.length; i++) {
         if (hms[i].includes(user)) {
@@ -154,8 +169,8 @@ function(context, a) { // t: #s.username.target
     }
 
     return {
-        t1_ts: ts,
-        users: us,
+        t1_ts: targets,
+        users: users,
         t2_ts: t2_ts
     };
 }
