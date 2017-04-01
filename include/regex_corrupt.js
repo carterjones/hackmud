@@ -2,5 +2,5 @@
 INCLUDE(stdlib);
 
 new RegExp("`[" + stdlib.colors + "][" + stdlib.corruption_chars + "]`", "g")
-    // or static
-    // /`\w[¡¢£¤¥¦§¨©ª]`/g
+// or static
+// /`\w[¡¢£¤¥¦§¨©ª]`/g
