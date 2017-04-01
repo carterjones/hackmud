@@ -1,4 +1,4 @@
-function(context, args) { // t: #s.username.target
+function(context, args) { // t:#s.username.target
     // Handle the case with no arguments passed.
     if (args === null) {
         // Get all FULLSEC targets.
@@ -27,10 +27,14 @@ function(context, args) { // t: #s.username.target
         });
 
         return {
-            usage: "harvest{t:#s.user.target}",
+            usage: "harvest{t:#s.username.target}",
             fullsec_targets: publics_and_entries
         };
     }
+
+    var highsec_targets = #s.scripts.highsec();
+    var midsec_targets = #s.scripts.midsec();
+    var hm_targets = highsec_targets.concat(midsec_targets);
 
     // Extract the banner of the script.
     var banner = args.t.call().split("\n");
@@ -46,10 +50,6 @@ function(context, args) { // t: #s.username.target
         }).filter(function(v) {
             return v.length > 0;
         });
-
-    if (pages !== null) {
-        return pages;
-    }
 
     // Prepare a variable to hold arguments that will be passed to the function passed in to this script.
     var function_args = {};
@@ -91,11 +91,11 @@ function(context, args) { // t: #s.username.target
     var t1_targets = [];
 
     // Look for projects and passwords in each of the pages.
-    pages.forEach(function(v) {
+    pages.forEach(function(page) {
         function_args = {};
         // Craft the arguments that will be called.
         // e.g.: {"see":"about_us"}
-        function_args[view_command] = v;
+        function_args[view_command] = page;
 
         // Call the function with the custom arguments.
         output_generic = args.t.call(function_args);
@@ -103,20 +103,29 @@ function(context, args) { // t: #s.username.target
         // Search for projects.
         do {
             m = regex_projects.exec(output_generic);
+            if (m === null) {
+                break;
+            }
             projects.push(m[2]);
-        } while (m !== null);
+        } while (true);
 
         // Search for passwords.
         do {
             m = regex_passwords.exec(output_generic);
+            if (m === null) {
+                break;
+            }
             passwords.push(m[2]);
-        } while (m !== null);
+        } while (true);
 
         // Search for users.
         do {
             m = regex_users.exec(output_generic);
+            if (m === null) {
+                break;
+            }
             users.push(m[1]);
-        } while (m !== null);
+        } while (true);
     });
 
     // Gather the results from each of the projects (and assume only one password was found).
@@ -127,7 +136,7 @@ function(context, args) { // t: #s.username.target
         //         - pass
         //         - password
         //       Therefore, we pass in all three, since it ignores unneeded parameters.
-        cw_key = [view_command];
+        var cw_key = [view_command];
         output_generic = args.t.call({
             p: passwords[0],
             pass: passwords[0],
@@ -163,18 +172,17 @@ function(context, args) { // t: #s.username.target
     }
 
     // Gather matching HIGHSEC and MIDSEC targets.
-    var high_and_midsec_scripts = #s.scripts.highsec().concat(#s.scripts.midsec());
     var t2_targets = [];
-    var user = args.t.name.split(".")[0];
+    var target_author = args.t.name.split(".")[0];
 
-    for (i = 0; i < high_and_midsec_scripts.length; i++) {
-        if (high_and_midsec_scripts[i].includes(user)) {
-            t2_targets.push(high_and_midsec_scripts[i]);
+    for (i = 0; i < hm_targets.length; i++) {
+        if (hm_targets[i].includes(target_author)) {
+            t2_targets.push(hm_targets[i]);
         }
     }
 
     return {
-        t1_targets: targets,
+        t1_targets: t1_targets,
         users: users,
         t2_targets: t2_targets
     };
