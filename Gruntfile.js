@@ -105,7 +105,7 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         meta: {
-            user: grunt.option("user") || "nimvek",
+            user: grunt.option("user") || "dr_dvorak",
             lib: [].concat(grunt.option("lib") || []),
         },
         clean: {
